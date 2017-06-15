@@ -2,6 +2,8 @@ package com.jpmc.uber4jp.service;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.jpmc.uber4jp.model.User;
  
 public interface UserService {
@@ -21,4 +23,5 @@ public interface UserService {
     List<User> findAllUsers();
  
     boolean isUserExist(User user);
+
 }

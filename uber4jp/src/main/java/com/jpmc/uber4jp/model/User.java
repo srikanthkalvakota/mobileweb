@@ -1,35 +1,48 @@
 package com.jpmc.uber4jp.model;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.NotEmpty;
- 
+
 @Entity
-@Table(name="APP_USER")
-public class User implements Serializable{
- 
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
- 
-    @NotEmpty
-    @Column(name="NAME", nullable=false)
-    private String name;
- 
-    @Column(name="AGE", nullable=false)
-    private Integer age;
- 
-    @Column(name="SALARY", nullable=false)
-    private double salary;
-	
-    public Long getId() {
+@Table(name = "APP_USER")
+public class User implements Serializable {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@NotEmpty
+	@Column(name = "NAME", nullable = false)
+	private String name;
+
+	@Column(name = "AGE", nullable = false)
+	private Integer age;
+
+	@Column(name = "SALARY", nullable = false)
+	private double salary;
+
+	@NotEmpty
+	@Column(name = "PASSWORD", nullable = false)
+	private String password;
+
+	private String passwordConfirm;
+
+	private Set<Role> roles;
+
+	public Long getId() {
 		return id;
 	}
 
@@ -61,16 +74,48 @@ public class User implements Serializable{
 		this.salary = salary;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@Transient
+	public String getPasswordConfirm() {
+		return passwordConfirm;
+	}
+
+	public void setPasswordConfirm(String passwordConfirm) {
+		this.passwordConfirm = passwordConfirm;
+	}
+
+	@ManyToMany
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
 		User user = (User) o;
 
-		if (Double.compare(user.salary, salary) != 0) return false;
-		if (id != null ? !id.equals(user.id) : user.id != null) return false;
-		if (name != null ? !name.equals(user.name) : user.name != null) return false;
+		if (Double.compare(user.salary, salary) != 0)
+			return false;
+		if (id != null ? !id.equals(user.id) : user.id != null)
+			return false;
+		if (name != null ? !name.equals(user.name) : user.name != null)
+			return false;
 		return age != null ? age.equals(user.age) : user.age == null;
 	}
 
@@ -88,9 +133,7 @@ public class User implements Serializable{
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", age=" + age
-				+ ", salary=" + salary + "]";
+		return "User [id=" + id + ", name=" + name + ", age=" + age + ", salary=" + salary + "]";
 	}
 
-    
 }

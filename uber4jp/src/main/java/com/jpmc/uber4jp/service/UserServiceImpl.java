@@ -1,12 +1,15 @@
 package com.jpmc.uber4jp.service;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jpmc.uber4jp.model.User;
+import com.jpmc.uber4jp.repositories.RoleRepository;
 import com.jpmc.uber4jp.repositories.UserRepository;;
 
 @Service("userService")
@@ -15,6 +18,10 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private RoleRepository roleRepository;
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	public User findById(Long id) {
 		return userRepository.findOne(id);
@@ -25,6 +32,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public void saveUser(User user) {
+
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		user.setRoles(new HashSet<>(roleRepository.findAll()));
 		userRepository.save(user);
 	}
 
