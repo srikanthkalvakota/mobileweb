@@ -16,7 +16,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name = "ROLE")
 public class Role {
 	
-    private Long id;
+	 private Long id;
+	
     @NotEmpty
 	@Column(name = "NAME", nullable = false)
     private String name;
@@ -25,6 +26,7 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ROLE_ID", nullable = false)
     public Long getId() {
         return id;
     }

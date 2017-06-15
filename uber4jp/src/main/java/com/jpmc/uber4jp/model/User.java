@@ -20,8 +20,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name = "APP_USER")
 public class User implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotEmpty
@@ -42,6 +40,9 @@ public class User implements Serializable {
 
 	private Set<Role> roles;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "USER_ID", nullable = false)
 	public Long getId() {
 		return id;
 	}
@@ -92,7 +93,7 @@ public class User implements Serializable {
 	}
 
 	@ManyToMany
-	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
 	public Set<Role> getRoles() {
 		return roles;
 	}
